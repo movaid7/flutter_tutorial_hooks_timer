@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -29,7 +31,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int number = 0;
+  late Timer _timer;
+  int _number = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        _number = _timer.tick;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Title'),
       ),
       body: Center(
-        child: Text(number.toString()),
+        child: Text(_number.toString()),
       ),
     );
   }
